@@ -1,19 +1,31 @@
-function iniciar () {
+var querystring = require("querystring");
+
+function iniciar (response, postData) {
 	console.log("Manipulador de peticion 'iniciar' ha sido llamado.");
+
+	 var body = '<html>'+
+	    '<head>'+
+	    '<meta http-equiv="Content-Type" content="text/html charset=UTF-8" />'+
+	    '</head>'+
+	    '<body>'+
+	    '<form action="/subir" method="post">'+
+	    '<textarea name="text" rows="20" cols="60"></textarea>'+
+	    '<input type="submit" value="Submit text" />'+
+	    '</form>'+
+	    '</body>'+
+	    '</html>';
 	
-	function sleep (milliSeconds) {
-		// obtener la hora actual
-		var startTime = new Date().getTime();
-		// atasca la cpu
-		while (new Date().getTime() < startTime + milliSeconds);
-	}
-	sleep(10000);
-	return "Hola iniciar";
+		response.writeHead(200, {"Content-Type": "text/html"});
+		response.write(body);
+		response.end();
 }
 
-function subir () {
+function subir (response, dataPosteada) {
 	console.log("Manipulador de peticion 'subir' ha sido llamado.");
-	return "Hola subir";
+	response.writeHead(200, {"Content-Type": "text/html"});
+	response.write("Tu enviaste el texto: " + 
+		querystring.parse(dataPosteada)["text"]);
+	response.end();
 }
 
 exports.iniciar = iniciar;
